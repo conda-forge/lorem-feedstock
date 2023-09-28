@@ -1,31 +1,33 @@
 {% set name = "lorem" %}
 {% set version = "0.1.1" %}
-{% set sha256 = "785f4109a241fc2891e59705e85d065f6e6d3ed6ad91750a8cb54d4f3e59d934" %}
 
 package:
   name: {{ name|lower }}
   version: {{ version }}
 
 source:
-  fn: {{ name }}-{{ version }}.tar.gz
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
-  sha256: {{ sha256 }}
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/lorem-{{ version }}.tar.gz
+  sha256: 785f4109a241fc2891e59705e85d065f6e6d3ed6ad91750a8cb54d4f3e59d934
 
 build:
-  number: 1005
-  skip: True  # [py<34]
-  script: python setup.py install --single-version-externally-managed --record record.txt
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv
+  number: 1006
 
 requirements:
   host:
-    - python
-    - setuptools
+    - python >=3.6
+    - pip
   run:
-    - python
+    - python >=3.6
 
 test:
   imports:
     - lorem
+  commands:
+    - pip check
+  requires:
+    - pip
 
 about:
   home: https://github.com/sfischer13/python-lorem
